@@ -1,0 +1,113 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+
+/** Drop Existing Table **/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Webtech4rindia_Contact]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	drop table {databaseOwner}{objectQualifier}Webtech4rindia_Contact
+	GO
+
+/** Drop Existing Stored Procedures **/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Webtech4rindia_AddContactUs]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Webtech4rindia_AddContactUs
+GO
+
+ 
+
+/** Create Stored Procedures **/
+
+/** Create Table **/
+
+ 
+		CREATE TABLE {databaseOwner}{objectQualifier}Webtech4rindia_Contact
+		(
+		[ID] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [nvarchar](100) NULL,
+	[LastName] [nvarchar](100) NULL,
+	[Positions] [nvarchar](50) NULL,
+	[SalonName] [nvarchar](100) NULL,
+	[Address] [nvarchar](200) NULL,
+	[City] [nvarchar](200) NULL,
+	[State] [nvarchar](50) NULL,
+	[TelephoneNumber] [nvarchar](20) NULL,
+	[EmailAddress] [nvarchar](100) NULL,
+	[ZipCode] [nvarchar](10) NULL,
+	[AdditionalQuestion] [nvarchar](4000) NULL,
+	[IsEmailNotification] [bit] NULL,
+	[IsDesignService] [bit] NULL,
+	[ModuleId] [int] NULL,
+	[PortalId] [int] NULL,
+	[CreatedDateTime] [datetime] NULL
+		) 
+		 
+	 
+GO
+ ALTER TABLE {databaseOwner}[{objectQualifier}Webtech4rindia_Contact] ADD CONSTRAINT [PK_{objectQualifier}Webtech4rindia_Contact] PRIMARY KEY NONCLUSTERED  ([ID])
+
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}Webtech4rindia_AddContactUs
+(
+ 
+@FirstName  nvarchar(100) ,
+            @LastName  nvarchar(100) ,
+            @Positions  nvarchar(50) ,
+            @SalonName  nvarchar(100) ,
+            @Address  nvarchar(200) ,
+            @City  nvarchar(200) ,
+            @State  nvarchar(50) ,
+            @TelephoneNumber  nvarchar(20) ,
+            @EmailAddress  nvarchar(100) ,
+            @AdditionalQuestion  nvarchar(4000) ,
+            @IsEmailNotification  bit ,
+            @IsDesignService  bit ,
+            @ModuleId  int ,
+            @PortalId  int ,
+            @ZipCode nvarchar(10)  
+)  
+AS  
+begin  
+Insert into {databaseOwner}[{objectQualifier}Webtech4rindia_Contact] ([FirstName],
+            [LastName],
+            [Positions],
+            [SalonName],
+            [Address],
+            [City],
+            [State],
+            [TelephoneNumber],
+            [EmailAddress],
+            [AdditionalQuestion],
+            [IsEmailNotification],
+            [IsDesignService],
+            [ModuleId],
+            [PortalId],
+            [CreatedDateTime],[ZipCode]) values
+(@FirstName  ,
+            @LastName  , 
+            @Positions , 
+            @SalonName , 
+            @Address ,  
+            @City   ,
+            @State   ,
+            @TelephoneNumber ,  
+            @EmailAddress , 
+            @AdditionalQuestion  , 
+            @IsEmailNotification ,  
+            @IsDesignService  , 
+            @ModuleId  ,
+            @PortalId  ,
+            GETDATE(),@ZipCode)  
+End
+
+GO
